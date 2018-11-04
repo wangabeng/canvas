@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
+  <title></title>
+  <script src='./jquery.js'></script>
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+/*    background-image: url('./test.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center center; */
+  }
+
+  input {
+    position: absolute;
+    bottom: 10px;
+    left: 100px;
+  }
+
+  #canvas {
+  }
+
+  </style>
+</head>
+<body>
+  <div class='wrapper'>
+    <canvas id="canvas" width="600" height="600"></canvas>
+  </div>
+</body>
+
+<script>
+window.onload= function () {
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
+  var t = .05; // t时间间隔.1s
+
+  var ballArry = [];
+
+  var Ball = function () {
+    // this.vx0 = 0;
+    // this.vy0 = 0;
+
+    // 即时坐标
+    this.vxt = 10; 
+    this.vyt = 10;
+
+    this.i = 0;
+
+    this.speedX = Math.random()*10;
+    this.speedY = Math.random()*20;
+
+    // this.initeX = canvas.width / 2 + Math.random() * 20;
+    // this.initeY = canvas.height / 2 + Math.random() * 20;
+
+  }
+
+  // 绘制
+  Ball.prototype.render = function () {
+    // 重绘
+     // clear canvas
+
+    // start
+    ctx.save();
+
+    ctx.beginPath();
+    // 绘制圆
+    ctx.fillStyle='red';
+    ctx.arc(this.vxt, this.vyt,5, 0, Math.PI*2, true);
+    ctx.fill();
+
+    // close
+    ctx.restore();
+  }
+
+  // S=V0t+1/2at^2
+  // 更新
+  Ball.prototype.update = function () {
+    this.i++;
+
+    this.vxt += this.speedX;
+    this.vyt += this.speedY * Math.pow(this.i/50, 2);
+    this.render();
+  }
+
+  ballArry.push(new Ball());
+
+  var generateBall = setInterval(function () {
+    ballArry.push(new Ball());
+  }, 300);
+
+  setInterval(function () {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+
+
+    for (var i = 0; i < ballArry.length; i++) {
+      
+      // 判断是否出画面
+      if (ballArry[i].vxt > canvas.height) {
+        ballArry.splice(i, 1);
+        continue;
+      }
+      console.log(ballArry.length);
+      ballArry[i].update();
+    }
+
+
+  }, 20);
+
+}
+</script>
+</html>

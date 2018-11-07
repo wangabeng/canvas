@@ -46,10 +46,13 @@ window.onload= function () {
   ctx.restore();
 
   ctx.save();
-  ctx.fillStyle = 'green';
+  // 移动原点
   ctx.translate(100, 100);
+  
+
+  ctx.fillStyle = 'green';
+  ctx.fillRect(0,0,100,100);
   ctx.rotate(Math.PI / 4);
-  ctx.fillRect(100,100,100,100);
   ctx.restore();
 
 }

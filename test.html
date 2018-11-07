@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
+  <title>xxxx</title>
+  <!-- <script src='./jquery.js'></script> -->
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    /*background-color: black;*/
+/*    background-image: url('./test.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center center; */
+  }
+
+  input {
+    position: absolute;
+    bottom: 10px;
+    left: 100px;
+  }
+
+  #canvas {
+  }
+
+  </style>
+</head>
+<body>
+  <div class='wrapper'>
+    <canvas id="canvas" width="600" height="600"></canvas>
+  </div>
+</body>
+
+<script>
+window.onload= function () {
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
+
+  ctx.save();
+  ctx.fillStyle = 'red';
+  ctx.fillRect(0,0,100,100);
+  ctx.restore();
+
+  ctx.save();
+  ctx.fillStyle = 'green';
+  ctx.translate(100, 100);
+  ctx.rotate(Math.PI / 4);
+  ctx.fillRect(100,100,100,100);
+  ctx.restore();
+
+}
+</script>
+</html>

@@ -9,11 +9,11 @@
     <meta content="email=no" name="format-detection">
 
     <title>签名-canvas</title>
-    <link href="./css/awesome.css" rel="stylesheet">
+    <!-- <link href="./css/awesome.css" rel="stylesheet">
     <link href="./css/base.css" rel="stylesheet">
     <link href="./css/common.css" rel="stylesheet">
     <link href="./css/iSlider.css" rel="stylesheet">
-    <link href="./css/index.css" rel="stylesheet">
+    <link href="./css/index.css" rel="stylesheet"> -->
     
     <script type="text/javascript" src="./js/jquery1.10.2.js"></script>
     <script type="text/javascript" src="./js/fontSize.js"></script>
@@ -22,7 +22,7 @@
 
 </head>
 <body>
-  <div class='wrapper'>
+  <div class='wrapper' style='border: 1px solid gray;width: 300px;height: 300px'>
     <canvas id="canvas" width="300" height="300"></canvas>
   </div>
 
@@ -30,6 +30,18 @@
 </body>
 
 <script>
+/*  
+  重要api
+  1 获取元素在窗口中left top width height值 element.getClientRects()[0].left/top
+
+  2 获取鼠标/手指在屏幕的位置 e.touches[0].clientX  / e.touches[0].clientY
+
+  3 绘图注意beginPath 和closePath
+
+  4 注意保存和释放绘图状态 save restore方法
+
+
+*/
 
 window.onload= function () {
   var canvas=document.getElementById("canvas");
@@ -41,7 +53,7 @@ window.onload= function () {
   console.log(canvasPosition);
 
   // 手指按下的时候 清屏开始绘制
-  canvas.ontouchstart = function (event) {
+  document.body.ontouchstart = function (event) {
     var e = event || window.event;
     // 获取第一个手指的坐标X Y
     var beginX = e.touches[0].clientX - canvasPosition.left;
@@ -57,7 +69,7 @@ window.onload= function () {
     ctx.moveTo(beginX,beginY);
   };
 
-  canvas.ontouchmove = function (event) {
+  document.body.ontouchmove = function (event) {
     var e = event || window.event;
     // 即时坐标值
     var curX = e.touches[0].clientX - canvasPosition.left;
@@ -66,7 +78,7 @@ window.onload= function () {
     ctx.stroke();
   };
 
-  canvas.ontouchend = function () {
+  document.body.ontouchend = function () {
     ctx.closePath();
     ctx.restore();
   };

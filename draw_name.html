@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+
+    <title>签名-canvas</title>
+    <link href="./css/awesome.css" rel="stylesheet">
+    <link href="./css/base.css" rel="stylesheet">
+    <link href="./css/common.css" rel="stylesheet">
+    <link href="./css/iSlider.css" rel="stylesheet">
+    <link href="./css/index.css" rel="stylesheet">
+    
+    <script type="text/javascript" src="./js/jquery1.10.2.js"></script>
+    <script type="text/javascript" src="./js/fontSize.js"></script>
+    <script type="text/javascript" src="./js/common.js"></script>
+    <script type="text/javascript" src='./layer/layer.js'></script>
+
+</head>
+<body>
+  <div class='wrapper'>
+    <canvas id="canvas" width="300" height="300"></canvas>
+  </div>
+
+  <input type="button" id='reset' value='重新签名'>
+</body>
+
+<script>
+
+window.onload= function () {
+  var canvas=document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+
+  // console.log(canvas.getClientRects(), 'aaa');
+  // 获取canvas的坐标集合
+  var canvasPosition = canvas.getClientRects()[0];
+  console.log(canvasPosition);
+
+  // 手指按下的时候 清屏开始绘制
+  canvas.ontouchstart = function (event) {
+    var e = event || window.event;
+    // 获取第一个手指的坐标X Y
+    var beginX = e.touches[0].clientX - canvasPosition.left;
+    var beginY = e.touches[0].clientY - canvasPosition.top;
+
+    console.log('ontouchstart', beginX, beginY);
+
+    // 开始绘制起点
+    ctx.save();
+    ctx.beginPath();
+    
+    ctx.style = 'black';
+    ctx.moveTo(beginX,beginY);
+  };
+
+  canvas.ontouchmove = function (event) {
+    var e = event || window.event;
+    // 即时坐标值
+    var curX = e.touches[0].clientX - canvasPosition.left;
+    var curY = e.touches[0].clientY - canvasPosition.top;
+    ctx.lineTo(curX,curY);
+    ctx.stroke();
+  };
+
+  canvas.ontouchend = function () {
+    ctx.closePath();
+    ctx.restore();
+  };
+
+  // 清楚屏幕
+  var resetBtn = document.getElementById('reset');
+  resetBtn.addEventListener('click', function () {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  });
+
+
+}
+</script>
+</html>

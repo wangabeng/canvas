@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+
+    <title>clip裁切-canvas</title>
+    <link href="./css/awesome.css" rel="stylesheet">
+    <link href="./css/base.css" rel="stylesheet">
+    <link href="./css/common.css" rel="stylesheet">
+    <link href="./css/iSlider.css" rel="stylesheet">
+    <link href="./css/index.css" rel="stylesheet">
+    
+    <script type="text/javascript" src="./js/jquery1.10.2.js"></script>
+    <script type="text/javascript" src="./js/fontSize.js"></script>
+    <script type="text/javascript" src="./js/common.js"></script>
+    <script type="text/javascript" src="./js/iSlider.js"></script>
+    <script type="text/javascript" src="./js/iSlider.animate.js"></script>
+    <script type="text/javascript" src="./js/iSlider.dot.js"></script>
+    <script type="text/javascript" src="./js/iSlider.plugin.button.js"></script>
+    <script type="text/javascript" src='./layer/layer.js'></script>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        }
+        body {
+        }
+
+        input {
+        position: absolute;
+        bottom: 10px;
+        left: 100px;
+        }
+
+        #canvas {
+        }
+    </style>
+</head>
+<body>
+  <div class='wrapper'>
+    <canvas id="canvas" width='600' height='600'></canvas>
+  </div>
+
+</body>
+
+<script>
+window.onload= function () {
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
+
+  // 外边界长方形
+  ctx.save();
+  ctx.fillStyle = 'black';
+  ctx.beginPath();
+  ctx.fillRect(0,0,300,300);
+  ctx.restore();
+
+  // clip区域
+  ctx.save();
+  ctx.beginPath();
+
+  ctx.fillStyle = 'red';
+  ctx.strokeStyle = 'red';
+  ctx.arc(150,150,100,0,Math.PI * 2);
+  ctx.stroke();
+  ctx.clip(); // fill stroke clip是三种不同的绘制方法
+
+  // 注意 设置clip剪切区域后 如果restore释放状态 则以下绘制的绿色长方形会正常绘制 即没有被限定在这个圆形的绘图区域
+  ctx.restore(); // 对比注释前后的变化
+
+  // 绘制一个绿色长方形
+  ctx.fillStyle = 'green';
+  ctx.fillRect(150,150,200,100);
+
+}
+</script>
+</html>

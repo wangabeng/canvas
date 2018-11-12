@@ -40,7 +40,6 @@
 
   4 注意保存和释放绘图状态 save restore方法
 
-
 */
 
 window.onload= function () {
@@ -65,7 +64,10 @@ window.onload= function () {
     ctx.save();
     ctx.beginPath();
     
-    ctx.style = 'black';
+    ctx.strokeStyle = "red";
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round"; // 线段两端
+    ctx.lineJoin = "round"; // 拐角处
     ctx.moveTo(beginX,beginY);
   };
 

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+
+    <title>刮刮卡-canvas</title>
+    <link href="./css/awesome.css" rel="stylesheet">
+    <link href="./css/base.css" rel="stylesheet">
+    <link href="./css/common.css" rel="stylesheet">
+    <link href="./css/iSlider.css" rel="stylesheet">
+    <link href="./css/index.css" rel="stylesheet">
+    
+    <script type="text/javascript" src="./js/jquery1.10.2.js"></script>
+    <script type="text/javascript" src="./js/fontSize.js"></script>
+    <script type="text/javascript" src="./js/common.js"></script>
+    <script type="text/javascript" src="./js/iSlider.js"></script>
+    <script type="text/javascript" src="./js/iSlider.animate.js"></script>
+    <script type="text/javascript" src="./js/iSlider.dot.js"></script>
+    <script type="text/javascript" src="./js/iSlider.plugin.button.js"></script>
+    <script type="text/javascript" src='./layer/layer.js'></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+        }
+        .canvas-wrapper {
+          width: 300px;
+          height: 300px;
+          background-image: url(./img/timg.jpg);
+          background-size: cover;
+          background-color: green;
+          background-repeat: no-repeat;
+          border: 1px solid gray;
+        }
+
+        #canvas {
+        }
+    </style>
+</head>
+<body>
+  <div class='canvas-wrapper'>
+    <canvas id="canvas" width='300' height='300'></canvas>
+  </div>
+
+</body>
+
+<script>
+/*
+  刮刮卡实现逻辑
+  1 div容器是刮刮卡的内容
+  2 canvas在div容器内，首先在canvas上绘制覆盖层 又叫涂层
+  3 在canvas上绘制透明区域 
+
+  canvas api 
+  ctx.globalCompositeOperation = 'destination-out'; 设置透明度
+
+ */
+window.onload= function () {
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
+
+  // 1 设置背景图 可以动态设置 通过ajax请求得到
+
+  // 2 填充半透明区域 或图片
+  var imgData =  new Image();
+  imgData.src = './img/tuceng.jpg';
+
+  // 绘制涂层
+  imgData.onload = function () {
+    ctx.save();
+    ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+    ctx.restore();
+
+    // 通过手指滑动刮开涂层 监听手指在视窗中位置 参照签名的demo
+    var canvasPosition = canvas.getClientRects()[0];
+
+
+    // 手指按下的时候 清屏开始绘制
+    document.body.ontouchstart = function (event) {
+      var e = event || window.event;
+      // 获取第一个手指的坐标X Y
+      var beginX = e.touches[0].clientX - canvasPosition.left;
+      var beginY = e.touches[0].clientY - canvasPosition.top;
+
+
+      // 开始绘制起点
+      ctx.save();
+      ctx.beginPath();
+      ctx.globalCompositeOperation = 'destination-out';
+      
+      ctx.strokeStyle = "red";
+      ctx.lineWidth = 20;
+      ctx.lineCap = "round"; // 线段两端
+      ctx.lineJoin = "round"; // 拐角处
+      ctx.moveTo(beginX,beginY);
+    };
+
+    document.body.ontouchmove = function (event) {
+      var e = event || window.event;
+      // 即时坐标值
+      var curX = e.touches[0].clientX - canvasPosition.left;
+      var curY = e.touches[0].clientY - canvasPosition.top;
+      ctx.lineTo(curX,curY);
+      ctx.stroke();
+    };
+
+    document.body.ontouchend = function () {
+      ctx.closePath();
+      ctx.restore();
+    };
+  };
+
+}
+</script>
+</html>

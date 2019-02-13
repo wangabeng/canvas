@@ -67,10 +67,9 @@ window.onload= function () {
   var canvas = document.getElementById('canvas');
   var ctx = canvas.getContext('2d');
 
-  // 1 设置背景图 可以动态设置 通过ajax请求得到 动态设置获奖图片
-  document.querySelector(".canvas-wrapper").style.backgroundImage = "url(./img/timg.jpg)";
 
-  // 2 填充半透明区域 或图片
+
+  // 1 填充半透明区域 或图片
   var imgData =  new Image();
   imgData.src = './img/tuceng.jpg';
 
@@ -80,6 +79,10 @@ window.onload= function () {
     ctx.save();
     ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
     ctx.restore();
+
+    // 2 设置背景图 可以动态设置 通过ajax请求得到 动态设置获奖图片
+    document.querySelector(".canvas-wrapper").style.backgroundImage = "url(./img/timg.jpg)";
+
 
     // 通过手指滑动刮开涂层 监听手指在视窗中位置 参照签名的demo
     var canvasPosition = canvas.getClientRects()[0];
@@ -135,7 +138,7 @@ window.onload= function () {
         return (transPixels.length / (pixels.length / 4) * 100).toFixed(2) + '%'
     }
 
-    
+
   };
 
 

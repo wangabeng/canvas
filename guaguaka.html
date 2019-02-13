@@ -33,6 +33,7 @@
         .canvas-wrapper {
           width: 300px;
           height: 300px;
+          margin: 0 auto auto;
           /*background-image: url(./img/timg.jpg);*/
           background-size: cover;
           background-color: green;
@@ -73,15 +74,15 @@ window.onload= function () {
   var imgData =  new Image();
   imgData.src = './img/tuceng.jpg';
 
-  // 绘制涂层
+  // 涂层图片加载
   imgData.onload = function () {
+    // 在canvas上绘制图层
     ctx.save();
     ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
     ctx.restore();
 
     // 通过手指滑动刮开涂层 监听手指在视窗中位置 参照签名的demo
     var canvasPosition = canvas.getClientRects()[0];
-
 
     // 手指按下的时候 清屏开始绘制
     document.body.ontouchstart = function (event) {
@@ -115,8 +116,32 @@ window.onload= function () {
     document.body.ontouchend = function () {
       ctx.closePath();
       ctx.restore();
+      console.log(getFilledPercentage());
     };
+
+    // 计算已经刮过的区域占整个区域的百分比
+    function getFilledPercentage() {
+        let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        // imgData.data是个数组，存储着指定区域每个像素点的信息，数组中4个元素表示一个像素点的rgba值
+        let pixels = imgData.data;
+        let transPixels = [];
+        for(let i = 0; i < pixels.length; i += 4){
+            // 严格上来说，判断像素点是否透明需要判断该像素点的a值是否等于0，
+            // 为了提高计算效率，这儿设置当a值小于128，也就是半透明状态时就可以了
+            if(pixels[i+3] < 128){
+                transPixels.push(pixels[i+3]);
+            }
+        }
+        return (transPixels.length / (pixels.length / 4) * 100).toFixed(2) + '%'
+    }
+
+    
   };
+
+
+
+
+
 
 }
 </script>

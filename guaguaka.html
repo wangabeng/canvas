@@ -120,6 +120,9 @@ window.onload= function () {
       ctx.closePath();
       ctx.restore();
       console.log(getFilledPercentage());
+      if (getFilledPercentage() > 80) {
+        alert('刮开80%');
+      }
     };
 
     // 计算已经刮过的区域占整个区域的百分比
@@ -135,7 +138,7 @@ window.onload= function () {
                 transPixels.push(pixels[i+3]);
             }
         }
-        return (transPixels.length / (pixels.length / 4) * 100).toFixed(2) + '%'
+        return (transPixels.length / (pixels.length / 4) * 100).toFixed(2);
     }
 
 
